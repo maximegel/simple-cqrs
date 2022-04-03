@@ -4,8 +4,7 @@ public abstract class Identifier<TSelf, TValue> : UnaryValueObject<TSelf, TValue
     IIdentifier
     where TSelf : Identifier<TSelf, TValue>
 {
-    protected Identifier(TValue value)
-        : base(value)
+    protected Identifier(TValue value) : base(value)
     {
     }
 

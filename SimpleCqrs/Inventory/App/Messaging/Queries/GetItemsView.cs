@@ -12,9 +12,9 @@ public record GetItemsView
 
 public record GetItemsViewValue
 {
-    public string Id { get; init; }
+    public string Id { get; init; } = null!;
     
-    public string Model { get; init; }
+    public string Model { get; init; } = null!;
     
-    public string Category { get; init; }
+    public string Category { get; init; } = null!;
 }

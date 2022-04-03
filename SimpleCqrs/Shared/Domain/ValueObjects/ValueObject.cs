@@ -1,4 +1,4 @@
-﻿namespace SimpleCqrs.Shared.Domain;
+﻿namespace SimpleCqrs.Shared.Domain.ValueObjects;
 
 public abstract class ValueObject<TSelf>
     where TSelf : ValueObject<TSelf>

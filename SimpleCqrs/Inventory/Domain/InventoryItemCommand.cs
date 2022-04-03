@@ -1,11 +1,15 @@
-﻿using SimpleCqrs.Shared.Domain.Commands;
+﻿using SimpleCqrs.Inventory.Domain.Internal;
+using SimpleCqrs.Shared.Domain.Commands;
 
 namespace SimpleCqrs.Inventory.Domain;
 
-public abstract record InventoryItemCommand : ICommand
+public abstract record InventoryItemCommand : Command
 {
-    private protected InventoryItemCommand(string? aggregateId) =>
-        AggregateId = aggregateId ?? InventoryItemId.Generate();
+    private protected InventoryItemCommand(string? aggregateId) :
+        base(aggregateId ?? InventoryItemId.Generate())
+    {
+    }
     
-    public string AggregateId { get; }
+    internal abstract IEnumerable<InventoryItemEvent> ExecuteOn(
+        InventoryItemState state);
 }

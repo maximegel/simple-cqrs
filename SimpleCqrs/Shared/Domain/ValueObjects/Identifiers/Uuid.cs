@@ -3,8 +3,7 @@
 public abstract class Uuid<TSelf> : Identifier<TSelf, Guid>
     where TSelf : Uuid<TSelf>, new()
 {
-    protected Uuid()
-        : base(Guid.Empty)
+    protected Uuid() : base(Guid.Empty)
     {
     }
 
