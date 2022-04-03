@@ -8,7 +8,7 @@ namespace SimpleCqrs.Shared.Infra.Di;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfra(
+    public static IServiceCollection AddMessaging(
         this IServiceCollection services, Assembly appAssembly)
     {
         services.AddMediatR(appAssembly);
