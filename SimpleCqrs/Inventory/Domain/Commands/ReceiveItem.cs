@@ -5,13 +5,12 @@ namespace SimpleCqrs.Inventory.Domain.Commands;
 
 public record ReceiveItem(
     string? AggregateId, 
-    string Model, 
-    string Category) : 
+    string CatalogId) : 
     InventoryItemCommand(AggregateId)
 {
     internal override IEnumerable<InventoryItemEvent> ExecuteOn(
         InventoryItemState state)
     { 
-        yield return new ItemReceived(Model, Category);
+        yield return new ItemReceived(CatalogId);
     }
 }

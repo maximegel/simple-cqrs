@@ -3,8 +3,7 @@
 namespace SimpleCqrs.Inventory.Domain.Events;
 
 public record ItemReceived(
-    string Model,
-    string Category) :
+    string CatalogId) :
     InventoryItemEvent
 {
     internal override InventoryItemState ApplyTo(InventoryItemState state)

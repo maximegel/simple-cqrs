@@ -1,32 +1,47 @@
-﻿using SimpleCqrs.Inventory.App.Projection;
+﻿using SimpleCqrs.Inventory.App.ReadModel;
 using SimpleCqrs.Shared.App.Messaging.Queries;
 
 namespace SimpleCqrs.Inventory.App.Messaging.Queries;
 
 public class GetItemsHandler : QueryHandler<GetItems, GetItemsView>
 {
-    private readonly IInventoryReadModel _readModel;
+    private readonly InventoryReadModel _readModel;
 
-    public GetItemsHandler(IInventoryReadModel readModel) => 
+    public GetItemsHandler(InventoryReadModel readModel) => 
         _readModel = readModel;
 
-    protected override async Task<GetItemsView> Handle(GetItems query, CancellationToken cancellationToken)
+    protected override async Task<GetItemsView> Handle(
+        GetItems query, 
+        CancellationToken cancellationToken)
     {
         var (limit, offset) = query;
 
-        var values = await _readModel.InventoryItems
-            .OrderBy(i => i.Model)
+        var inventoryItems = await _readModel.InventoryItems
             .Take(limit)
             .Skip(offset)
-            .Select(i => new GetItemsViewValue
-            {
-                Id = i.Id.ToString(),
-                Model = i.Model,
-                Category = i.Category
-            })
             .ToArrayAsync(cancellationToken);
+
+        var catalogItems = await _readModel.CatalogItems.FindRange(
+            inventoryItems.Select(i => i.CatalogId), 
+            cancellationToken);
+
+        var values = inventoryItems
+            .Join(
+                catalogItems,
+                inventoryItem => inventoryItem.CatalogId,
+                catalogItem => catalogItem.Id,
+                (inventoryItem, catalogItem) => new GetItemsViewValue
+                {
+                    Id = inventoryItem.Id,
+                    CatalogId = catalogItem.Id,
+                    Model = catalogItem.Model,
+                    Category = catalogItem.Category
+                })
+            .OrderBy(i => i.Model)
+            .ToArray();
         
-        var totalCount = await _readModel.InventoryItems.CountAsync(cancellationToken);
+        var totalCount = await _readModel.InventoryItems.CountAsync(
+            cancellationToken);
         
         return new GetItemsView
         {

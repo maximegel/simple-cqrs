@@ -14,7 +14,9 @@ public record GetItemsViewValue
 {
     public string Id { get; init; } = null!;
     
-    public string Model { get; init; } = null!;
+    public string CatalogId { get; init; } = null!;
     
+    public string Model { get; init; } = null!;
+
     public string Category { get; init; } = null!;
 }

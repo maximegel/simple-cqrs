@@ -1,14 +1,16 @@
 using System.Reflection;
+using SimpleCqrs.Inventory.App.Di;
 using SimpleCqrs.Inventory.Persistence;
 using SimpleCqrs.Inventory.Persistence.Di;
-using SimpleCqrs.Inventory.Projection.Di;
+using SimpleCqrs.Inventory.ReadModel.Di;
 using SimpleCqrs.Shared.Infra.Di;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
+    .AddInventoryApp()
     .AddInventoryPersistence()
-    .AddInventoryProjection()
+    .AddInventoryReadModel()
     .AddMessaging(Assembly.GetExecutingAssembly());
 
 builder.Services.AddControllers();

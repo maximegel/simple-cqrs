@@ -26,9 +26,8 @@ internal class InventoryItemSqlMapper :
     {
         switch (domainEvent)
         {
-            case ItemReceived(var model, var category):
-                data.Model = model;
-                data.Category = category;
+            case ItemReceived(var catalogId):
+                data.CatalogId = Guid.Parse(catalogId);
                 break;
         }
     }

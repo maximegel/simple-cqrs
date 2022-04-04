@@ -9,12 +9,10 @@ internal class InventoryItemData :
 {
     public Guid Id { get; private set; }
     
+    public Guid CatalogId { get; set; }
+    
     public InventoryItemStatus Status { get; set; }
-    
-    public string Model { get; set; } = null!;
-    
-    public string Category { get; set; } = null!;
-    
+
     protected override IIdentifier Identifier
     {
         get => InventoryItemId.Parse(Id);
