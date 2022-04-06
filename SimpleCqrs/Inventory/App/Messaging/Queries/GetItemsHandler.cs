@@ -35,7 +35,9 @@ public class GetItemsHandler : QueryHandler<GetItems, GetItemsView>
                     Id = inventoryItem.Id,
                     CatalogId = catalogItem.Id,
                     Model = catalogItem.Model,
-                    Category = catalogItem.Category
+                    Category = catalogItem.Category,
+                    Status = inventoryItem.Status,
+                    StorageLocation = inventoryItem.StorageLocation
                 })
             .OrderBy(i => i.Model)
             .ToArray();

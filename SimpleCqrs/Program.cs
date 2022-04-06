@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using SimpleCqrs.Inventory.App.Di;
 using SimpleCqrs.Inventory.Persistence;
 using SimpleCqrs.Inventory.Persistence.Di;
@@ -13,7 +14,15 @@ builder.Services
     .AddInventoryReadModel()
     .AddMessaging(Assembly.GetExecutingAssembly());
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters
+            .Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.DefaultIgnoreCondition =
+            JsonIgnoreCondition.WhenWritingNull;
+    });;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

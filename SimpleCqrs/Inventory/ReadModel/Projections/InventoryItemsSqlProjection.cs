@@ -17,10 +17,12 @@ internal class InventoryItemsSqlProjection :
     protected override IAsyncEnumerable<InventoryItemModel> Query =>
         _dbContext.InventoryItems
             .AsNoTracking()
-            .Select(m => new InventoryItemModel
+            .Select(data => new InventoryItemModel
             {
-                Id = m.Id.ToString(),
-                CatalogId = m.CatalogId.ToString()
+                Id = data.Id.ToString(),
+                CatalogId = data.CatalogId.ToString(),
+                Status = data.Status,
+                StorageLocation = data.StorageLocation
             })
             .AsAsyncEnumerable();
 }

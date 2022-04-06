@@ -1,4 +1,6 @@
-﻿namespace SimpleCqrs.Inventory.App.Messaging.Queries;
+﻿using SimpleCqrs.Inventory.Domain;
+
+namespace SimpleCqrs.Inventory.App.Messaging.Queries;
 
 public record GetItemsView
 {
@@ -19,4 +21,8 @@ public record GetItemsViewValue
     public string Model { get; init; } = null!;
 
     public string Category { get; init; } = null!;
+    
+    public InventoryItemStatus Status { get; init; }
+    
+    public string? StorageLocation { get; init; }
 }

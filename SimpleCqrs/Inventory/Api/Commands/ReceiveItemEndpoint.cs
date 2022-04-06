@@ -21,12 +21,13 @@ public class ReceiveItemEndpoint : ControllerBase
         Tags = new[] { "Inventory" })]
     public async Task<ActionResult> Invoke(ReceiveItemDto dto)
     {
-        var (id, catalogId) = dto;
-        await _bus.Send(new ReceiveItem(id, catalogId));
+        var (id, catalogId, orderId) = dto;
+        await _bus.Send(new ReceiveItem(id, catalogId, orderId));
         return Accepted();
     }
 }
 
 public record ReceiveItemDto(
     string? Id, 
-    string CatalogId);
+    string CatalogId,
+    string OrderId);

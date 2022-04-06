@@ -16,7 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Inventory\App\Messaging" />
+      <Folder Include="Inventory\App\Messaging\Events" />
+      <Folder Include="Inventory\App\Processing\Handlers" />
     </ItemGroup>
 
 </Project>
