@@ -1,5 +1,8 @@
-﻿namespace SimpleCqrs.Shared.Domain.Snapshots;
+﻿using SimpleCqrs.Shared.Domain.Events;
 
-public interface ISnapshot
+namespace SimpleCqrs.Shared.Domain.Snapshots;
+
+public interface ISnapshot :
+    IDomainEvent
 {
 }

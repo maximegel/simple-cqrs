@@ -1,10 +1,7 @@
 ﻿namespace SimpleCqrs.Shared.Domain.Snapshots;
 
-public interface ISnapshotable<out TEntity, TSnapshot>
-    where TEntity : IEntity
-    where TSnapshot : ISnapshot
+public interface ISnapshotable<out TAggregate>
+    where TAggregate : IAggregateRoot
 {
-    TSnapshot TakeSnapshot();
-    
-    TEntity RestoreSnapshot(TSnapshot snapshot);
+    TAggregate TakeSnapshot();
 }

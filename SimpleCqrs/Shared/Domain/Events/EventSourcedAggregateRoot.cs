@@ -2,14 +2,17 @@
 
 public abstract class EventSourcedAggregateRoot<TSelf, TId, TEvent> :
     EventDrivenAggregateRoot<TSelf, TId, TEvent>,
-    IEventSourced<TSelf, TEvent>
-    where TSelf : class, IAggregateRoot<TId>, IEventDriven<TSelf, TEvent>, IEventSourced<TSelf, TEvent>
+    IEventSourced<TSelf>
+    where TSelf : class, IAggregateRoot<TId>, IEventDriven<TSelf>, IEventSourced<TSelf>
     where TId : IIdentifier
     where TEvent : IDomainEvent
 {
     protected EventSourcedAggregateRoot(TId id) : base(id)
     {
     }
+
+    TSelf IEventSourced<TSelf>.Apply(IDomainEvent domainEvent) =>
+        domainEvent is TEvent e ? Apply(e) : AsSelf();
 
     public abstract TSelf Apply(TEvent domainEvent);
     
@@ -21,4 +24,6 @@ public abstract class EventSourcedAggregateRoot<TSelf, TId, TEvent> :
     {
         Apply(domainEvents);
     }
+
+    
 }

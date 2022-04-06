@@ -16,7 +16,7 @@ public class InventorySqlContext : DbContext
     {
         modelBuilder.Entity<InventoryItemData>(entity =>
         {
-            entity.ToTable("InventoryItem");
+            // entity.ToTable("InventoryItem");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedNever();
         });

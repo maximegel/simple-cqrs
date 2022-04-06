@@ -4,18 +4,13 @@ using SimpleCqrs.Shared.Infra.Persistence;
 
 namespace SimpleCqrs.Inventory.Persistence.Internal;
 
-internal class InventoryItemData : 
-    Persistent<InventoryItemData>
+internal class InventoryItemData 
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
     
     public Guid CatalogId { get; set; }
     
     public InventoryItemStatus Status { get; set; }
-
-    protected override IIdentifier Identifier
-    {
-        get => InventoryItemId.Parse(Id);
-        set => Id = (InventoryItemId)value;
-    }
+    
+    public string? StorageLocation { get; set; }
 }

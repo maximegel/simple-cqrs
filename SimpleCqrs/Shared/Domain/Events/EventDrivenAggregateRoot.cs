@@ -4,33 +4,32 @@ namespace SimpleCqrs.Shared.Domain.Events;
 
 public abstract class EventDrivenAggregateRoot<TSelf, TId, TEvent> : 
     AggregateRoot<TSelf, TId>,
-    IEventDriven<TSelf, TEvent>
-    where TSelf : class, IAggregateRoot<TId>, IEventDriven<TSelf, TEvent>
+    IEventDriven<TSelf>
+    where TSelf : class, IAggregateRoot<TId>, IEventDriven<TSelf>
     where TId : IIdentifier
     where TEvent : IDomainEvent
 {
-    private IEnumerable<TEvent> _uncommittedEvents = Enumerable.Empty<TEvent>();
+    private IEnumerable<IDomainEvent> _uncommittedEvents = 
+        Enumerable.Empty<IDomainEvent>();
 
     protected EventDrivenAggregateRoot(TId id) : base(id)
     {
     }
 
-    IEnumerable<TEvent> IEventDriven<TSelf, TEvent>.UncommittedEvents =>
+    IEnumerable<IDomainEvent> IEventDriven<TSelf>.UncommittedEvents =>
         _uncommittedEvents;
     
-    IEnumerable IEventDriven<TSelf>.UncommittedEvents => 
-        _uncommittedEvents;
-
     TSelf IEventDriven<TSelf>.MarkAsCommitted()
     {
-        _uncommittedEvents = Enumerable.Empty<TEvent>();
+        _uncommittedEvents = Enumerable.Empty<IDomainEvent>();
         return AsSelf();
     }
     
     protected void Raise(params TEvent[] domainEvents)
     {
         OnRaising(domainEvents);
-        _uncommittedEvents = _uncommittedEvents.Concat(domainEvents);
+        _uncommittedEvents = _uncommittedEvents.Concat(
+            domainEvents.OfType<IDomainEvent>());
     }
 
     protected void Raise(IEnumerable<TEvent> domainEvents) =>

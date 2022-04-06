@@ -3,15 +3,14 @@ using SimpleCqrs.Inventory.Domain.Internal;
 
 namespace SimpleCqrs.Inventory.Domain.Commands;
 
-public record ReceiveItem(
+public record RelocateItem(
     string? AggregateId, 
-    string CatalogId,
-    string OrderId) : 
+    string StorageLocation) : 
     InventoryItemCommand(AggregateId)
 {
     internal override IEnumerable<InventoryItemEvent> ExecuteOn(
         InventoryItemState state)
     { 
-        yield return new ItemReceived(CatalogId, OrderId);
+        yield return new ItemRelocated(StorageLocation);
     }
 }

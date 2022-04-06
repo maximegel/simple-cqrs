@@ -6,6 +6,7 @@ namespace SimpleCqrs.Inventory.Domain;
 
 public record InventoryItemSnapshot(
     InventoryItemStatus Status) : 
+    InventoryItemEvent,
     ISnapshot
 {
     internal static InventoryItemSnapshot Capture(

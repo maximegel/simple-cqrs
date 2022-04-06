@@ -2,13 +2,12 @@
 
 namespace SimpleCqrs.Inventory.Domain.Events;
 
-public record ItemReceived(
-    string CatalogId,
-    string OrderId) :
+public record ItemRelocated(
+    string StorageLocation) :
     InventoryItemEvent
 {
     internal override InventoryItemState ApplyTo(InventoryItemState state)
     {
-        return state.Receive();
+        return state;
     }
 }

@@ -8,8 +8,8 @@ namespace SimpleCqrs.Inventory.Domain;
 public interface IInventoryItem : 
     IAggregateRoot<InventoryItemId>,
     ICommandable<IInventoryItem, InventoryItemCommand>,
-    IEventDriven<IInventoryItem, InventoryItemEvent>,
-    IEventSourced<IInventoryItem, InventoryItemEvent>,
-    ISnapshotable<IInventoryItem, InventoryItemSnapshot> 
+    IEventDriven<IInventoryItem>,
+    IEventSourced<IInventoryItem>,
+    ISnapshotable<IInventoryItem> 
 {
 }

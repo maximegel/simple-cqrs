@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SimpleCqrs.Inventory.Domain;
-using SimpleCqrs.Inventory.Persistence.Internal;
-using SimpleCqrs.Shared.App.Persistence;
-using SimpleCqrs.Shared.Infra.Persistence;
-using SimpleCqrs.Shared.Infra.Persistence.EntityFramework;
+using SimpleCqrs.Shared.App.Persistence.Events;
+using SimpleCqrs.Shared.Infra.Persistence.Core.Events;
 
 namespace SimpleCqrs.Inventory.Persistence.Di;
 
@@ -12,14 +9,21 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInventoryPersistence(
         this IServiceCollection services)
     {
-        services.AddScoped<IRepository<IInventoryItem>>(
-            provider => provider.GetRequiredService<InventorySqlContext>()
-                .AsRepository<InventoryItemData>()
-                .UseMapper(new InventoryItemSqlMapper()));
+        services.AddScoped(
+            provider =>
+            {
+                var publisher = provider.GetRequiredService<IEventPublisher>();
+                var dbContext = provider.GetRequiredService<InventorySqlContext>();
+                return new InventoryItemSqlRepository(dbContext)
+                    .UseImmediatePublisher(publisher);
+            });
 
-        services.AddDbContext<InventorySqlContext>(options => 
-            options.UseSqlite("DataSource=file::memory:?cache=shared"));
+        services.AddDbContext<InventorySqlContext>(
+            options => options.UseSqlite("DataSource=file::memory:?cache=shared"),
+            // Hack for SQLite in-memory.
+            ServiceLifetime.Singleton);
         
         return services;
     }
+
 }

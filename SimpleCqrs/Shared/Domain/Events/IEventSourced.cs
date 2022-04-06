@@ -1,8 +1,7 @@
 ﻿namespace SimpleCqrs.Shared.Domain.Events;
 
-public interface IEventSourced<out TAggregate, in TEvent>
-    where TAggregate : IAggregateRoot, IEventSourced<TAggregate, TEvent>
-    where TEvent : IDomainEvent
+public interface IEventSourced<out TAggregate>
+    where TAggregate : IAggregateRoot, IEventSourced<TAggregate>
 {
-    TAggregate Apply(TEvent domainEvent);
+    TAggregate Apply(IDomainEvent domainEvent);
 }
