@@ -10,8 +10,6 @@ public static class CommandEnvelope
         new(command);
 }
 
-public record CommandEnvelope<TCommand>(TCommand Payload) : IRequest
-    where TCommand : ICommand
-{
-    public TCommand AsCommand() => Payload;
-}
+public record CommandEnvelope<TCommand>(TCommand Payload) :
+    IRequest
+    where TCommand : ICommand;

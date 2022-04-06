@@ -14,5 +14,7 @@ public abstract class CommandHandler<TCommand> :
         return Handle(envelope.Payload, cancellationToken);
     }
 
-    protected abstract Task Handle(TCommand command, CancellationToken cancellationToken);
+    protected abstract Task Handle(
+        TCommand command, 
+        CancellationToken cancellationToken);
 }
