@@ -19,7 +19,7 @@ internal class InventoryItemSqlRepository :
         _dbSet = _dbContext.InventoryItems;
     }
 
-    public async Task<IInventoryItem?> Find(
+    public async Task<IInventoryItem> Find(
         IIdentifier id, 
         CancellationToken cancellationToken = default)
     {
@@ -28,11 +28,10 @@ internal class InventoryItemSqlRepository :
             _dbSet.Local.FirstOrDefault(i => i.Id.ToString() == id.ToString())
             ?? await _dbSet.FirstOrDefaultAsync(
                 i => i.Id.ToString() == id.ToString(), 
-                cancellationToken);
+                cancellationToken)
+            ?? throw new AggregateNotFoundException();
 
-        return found == null 
-            ? null 
-            : InventoryItemSqlFactory.LoadFromData(id, found);
+        return InventoryItemSqlFactory.LoadFromData(id, found);
     }
 
     public async Task Save(

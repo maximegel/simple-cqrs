@@ -5,7 +5,7 @@ using SimpleCqrs.Shared.App.Persistence;
 
 namespace SimpleCqrs.Inventory.App.Messaging.Commands;
 
-public class RelocateItemHandler : CommandHandler<RelocateItem>
+public class RelocateItemHandler : CommandHandler<InventoryItemCommand>
 {
     private readonly IRepository<IInventoryItem> _repository;
 
@@ -13,13 +13,11 @@ public class RelocateItemHandler : CommandHandler<RelocateItem>
         _repository = repository;
     
     protected override async Task Handle(
-        RelocateItem command, 
+        InventoryItemCommand command, 
         CancellationToken cancellationToken)
     {
         var inventoryItemId = InventoryItemId.Parse(command.AggregateId);
-        var inventoryItem =
-            await _repository.Find(inventoryItemId, cancellationToken)
-            ?? throw new Exception("Aggregate not found.");
+        var inventoryItem = await _repository.Find(inventoryItemId, cancellationToken);
 
         inventoryItem.Execute(command);
         await _repository.Save(inventoryItem, cancellationToken);

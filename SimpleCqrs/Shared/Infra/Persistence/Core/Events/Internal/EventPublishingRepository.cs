@@ -21,7 +21,7 @@ internal class EventPublishingRepository<TAggregate> :
         _publisher = publisher;
     }
 
-    public Task<TAggregate?> Find(
+    public Task<TAggregate> Find(
         IIdentifier id, 
         CancellationToken cancellationToken = default)
     {

@@ -5,7 +5,7 @@ namespace SimpleCqrs.Shared.App.Persistence;
 public interface IRepository<TAggregate>
     where TAggregate : IAggregateRoot
 {
-    Task<TAggregate?> Find(
+    Task<TAggregate> Find(
         IIdentifier id, 
         CancellationToken cancellationToken = default);
 
