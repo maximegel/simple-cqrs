@@ -1,22 +1,17 @@
-﻿using SimpleCqrs.Inventory.Domain;
+﻿using SimpleCqrs.Inventory.App.Messaging.Commands.Base;
+using SimpleCqrs.Inventory.Domain;
 using SimpleCqrs.Inventory.Domain.Commands;
-using SimpleCqrs.Shared.App.Messaging.Commands;
 using SimpleCqrs.Shared.App.Persistence;
 
 namespace SimpleCqrs.Inventory.App.Messaging.Commands;
 
-public class ReceiveItemHandler : CommandHandler<ReceiveItem>
+public class ReceiveItemHandler : CreateItemHandler<ReceiveItem>
 {
-    private readonly IRepository<IInventoryItem> _repository;
-
-    public ReceiveItemHandler(IRepository<IInventoryItem> repository) =>
-        _repository = repository;
-    
-    protected override async Task Handle(
-        ReceiveItem command, 
-        CancellationToken cancellationToken)
+    public ReceiveItemHandler(IRepository<IInventoryItem> repository) :
+        base(repository)
     {
-        var inventoryItem = InventoryItemFactory.Receive(command);
-        await _repository.Save(inventoryItem, cancellationToken);
     }
+
+    protected override IInventoryItem Create(ReceiveItem command) =>
+        InventoryItemFactory.Receive(command);
 }
