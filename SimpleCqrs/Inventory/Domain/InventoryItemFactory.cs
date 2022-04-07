@@ -14,8 +14,8 @@ public static class InventoryItemFactory
     
     public static IInventoryItem LoadFromSnapshot(
         InventoryItemId id, InventoryItemSnapshot snapshot) =>
-        Load(id).Apply(snapshot);
+        Load(id).RestoreSnapshot(snapshot);
 
-    public static IInventoryItem Load(IIdentifier id) =>
+    private static IInventoryItem Load(IIdentifier id) =>
         new InventoryItem((InventoryItemId)id);
 }

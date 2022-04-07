@@ -26,9 +26,9 @@ internal class InventoryItem :
         return this;
     }
 
-    public IInventoryItem TakeSnapshot()
-    {
-        Raise(InventoryItemSnapshot.Capture(State));
-        return this;
-    }
+    public InventoryItemSnapshot TakeSnapshot() => 
+        InventoryItemSnapshot.Capture(State);
+
+    public IInventoryItem RestoreSnapshot(InventoryItemSnapshot snapshot) =>
+        new InventoryItem(Id) { State = snapshot.Restore() };
 }

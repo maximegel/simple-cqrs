@@ -10,6 +10,6 @@ public interface IInventoryItem :
     ICommandable<IInventoryItem, InventoryItemCommand>,
     IEventDriven<IInventoryItem>,
     IEventSourced<IInventoryItem>,
-    ISnapshotable<IInventoryItem> 
+    ISnapshotable<IInventoryItem, InventoryItemSnapshot> 
 {
 }

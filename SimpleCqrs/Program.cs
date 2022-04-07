@@ -1,18 +1,10 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 using SimpleCqrs.Inventory.App.Di;
-using SimpleCqrs.Inventory.Persistence;
-using SimpleCqrs.Inventory.Persistence.Di;
-using SimpleCqrs.Inventory.ReadModel.Di;
-using SimpleCqrs.Shared.Infra.Di;
+using SimpleCqrs.Inventory.Infra.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
-    .AddInventoryApp()
-    .AddInventoryPersistence()
-    .AddInventoryReadModel()
-    .AddMessaging(Assembly.GetExecutingAssembly());
+builder.Services.AddInventoryApp();
 
 builder.Services
     .AddControllers()

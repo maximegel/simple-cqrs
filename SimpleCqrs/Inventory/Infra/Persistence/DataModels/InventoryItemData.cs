@@ -1,12 +1,11 @@
 ﻿using SimpleCqrs.Inventory.Domain;
-using SimpleCqrs.Shared.Domain;
-using SimpleCqrs.Shared.Infra.Persistence;
+using SimpleCqrs.Inventory.Domain.Events;
 
-namespace SimpleCqrs.Inventory.Persistence.Internal;
+namespace SimpleCqrs.Inventory.Infra.Persistence.DataModels;
 
-internal class InventoryItemData 
+public class InventoryItemData 
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     
     public Guid CatalogId { get; set; }
     

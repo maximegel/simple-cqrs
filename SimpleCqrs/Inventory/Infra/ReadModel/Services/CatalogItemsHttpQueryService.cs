@@ -1,6 +1,6 @@
 ﻿using SimpleCqrs.Inventory.App.ReadModel.Services;
 
-namespace SimpleCqrs.Inventory.ReadModel.Services;
+namespace SimpleCqrs.Inventory.Infra.ReadModel.Services;
 
 public class CatalogItemsHttpQueryService :
     ICatalogItemsQueryService

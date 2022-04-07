@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleCqrs.Inventory.Domain;
-using SimpleCqrs.Inventory.Domain.Events;
-using SimpleCqrs.Inventory.Persistence.Internal;
+using SimpleCqrs.Inventory.Infra.Persistence.DataModels;
 using SimpleCqrs.Shared.App.Persistence;
 using SimpleCqrs.Shared.Domain;
 using SimpleCqrs.Shared.Domain.Events;
 
-namespace SimpleCqrs.Inventory.Persistence;
+namespace SimpleCqrs.Inventory.Infra.Persistence;
 
 internal class InventoryItemSqlRepository : 
     IRepository<IInventoryItem>
@@ -31,12 +30,9 @@ internal class InventoryItemSqlRepository :
                 i => i.Id.ToString() == id.ToString(), 
                 cancellationToken);
 
-        if (found == null) 
-            return null;
-
-        return InventoryItemFactory.LoadFromSnapshot(
-            (InventoryItemId)id,
-            new InventoryItemSnapshot(found.Status));
+        return found == null 
+            ? null 
+            : InventoryItemSqlFactory.LoadFromData(id, found);
     }
 
     public async Task Save(
@@ -49,12 +45,12 @@ internal class InventoryItemSqlRepository :
         if (found == null)
         {
             var added = new InventoryItemData { Id = id };
-            ApplyChanges(added, aggregate.UncommittedEvents);
+            ApplyChanges(added, aggregate);
             _dbSet.Add(added);
         }
         else
         {
-            ApplyChanges(found, aggregate.UncommittedEvents);
+            ApplyChanges(found, aggregate);
             _dbSet.Update(found);
         }
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -62,28 +58,29 @@ internal class InventoryItemSqlRepository :
 
     private static void ApplyChanges(
         InventoryItemData data, 
-        IDomainEvent domainEvent)
+        IInventoryItem aggregate)
     {
-        switch (domainEvent)
-        {
-            case ItemReceived(var catalogId):
-                data.CatalogId = Guid.Parse(catalogId);
-                break;
-            case ItemRelocated e:
-                data.StorageLocation = e.StorageLocation;
-                break;
-            case InventoryItemSnapshot e:
-                data.Status = e.Status;
-                break;
-        } 
+        var events = aggregate.UncommittedEvents;
+        ApplyEvents(data, events);
+        
+        var snapshot = aggregate.TakeSnapshot();
+        ApplySnapshot(data, snapshot);
     }
     
-    private static void ApplyChanges(
+    private static void ApplyEvents(
         InventoryItemData data, 
         IEnumerable<IDomainEvent> domainEvents)
     {
         domainEvents
+            .OfType<InventoryItemEvent>()
             .ToList()
-            .ForEach(domainEvent => ApplyChanges(data, domainEvent));
+            .ForEach(data.ApplyEvent);
+    }
+    
+    private static void ApplySnapshot(
+        InventoryItemData data, 
+        InventoryItemSnapshot snapshot)
+    {
+        data.ApplySnapshot(snapshot);
     }
 }

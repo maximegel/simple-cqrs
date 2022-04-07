@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleCqrs.Inventory.App.ReadModel.Projections;
-using SimpleCqrs.Inventory.Persistence;
+using SimpleCqrs.Inventory.Infra.Persistence;
 using SimpleCqrs.Shared.Infra.ReadModel.Projections;
 
-namespace SimpleCqrs.Inventory.ReadModel.Projections;
+namespace SimpleCqrs.Inventory.Infra.ReadModel.Projections;
 
 internal class InventoryItemsSqlProjection : 
     QueryableProjection<InventoryItemModel>,
